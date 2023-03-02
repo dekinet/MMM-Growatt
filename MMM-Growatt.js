@@ -1,3 +1,15 @@
+function addCellsToRow(tr, leftText, rightText) {
+  let td = document.createElement('td');
+  td.setAttribute('class', 'growatt-cell');
+  td.innerText = leftText;
+  tr.appendChild(td);
+
+  td = document.createElement('td');
+  td.setAttribute('class', 'growatt-cell');
+  td.innerText = rightText;
+  tr.appendChild(td);
+}
+
 Module.register("MMM-Growatt", {
   // Default configs
   defaults: {
@@ -69,31 +81,13 @@ Module.register("MMM-Growatt", {
 
       tr = document.createElement('tr');
       tr.setAttribute('class', 'growatt-row');
-
-      td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      td.innerText = 'Current:';
-      tr.appendChild(td);
-
-      td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      td.innerText = mydata.deviceData.pac + ' W';
-      tr.appendChild(td);
+      addCellsToRow(tr, 'Current:', mydata.deviceData.pac + ' W');
 
       table.appendChild(tr);
 
       tr = document.createElement('tr');
       tr.setAttribute('class', 'growatt-row');
-
-      td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      td.innerText = 'Today:';
-      tr.appendChild(td);
-
-      td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      td.innerText = mydata.totalData.eToday + ' kWh';
-      tr.appendChild(td);
+      addCellsToRow(tr, 'Today:',  mydata.totalData.eToday + ' kWh');
     } else {
       let td = document.createElement('td');
       td.setAttribute('class', 'growatt-cell');
