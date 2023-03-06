@@ -14,6 +14,12 @@ Module.register("MMM-Growatt", {
   // Default configs
   defaults: {
     intervalSecs: 300,
+    plantName: false,
+    lastUpdated: true,
+    currentPower: true,
+    dayTotalGenerated: true,
+    monthTotalGenerated: false,
+    totalGenerated: false,
   },
 
   start: function () {
@@ -64,37 +70,67 @@ Module.register("MMM-Growatt", {
     if (this.result) {
       const mydata = this.result.payload[0].data.devicesData[0].data;
 
-      let td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      td.innerText = 'Updated:';
-      tr.appendChild(td);
+      let td;
 
-      td = document.createElement('td');
-      td.setAttribute('class', 'growatt-cell');
-      if (this.result.payload) {
-        td.innerText = mydata.deviceData.lastUpdateTime.split(' ')[1];
-      } else {
-        td.innerText = 'Pending';
+      if (this.config.plantName) {
+        tr = document.createElement('tr');
+        tr.setAttribute('class', 'growatt-row');
+        addCellsToRow(tr, 'Plant:', mydata.deviceData.plantName);
+        table.appendChild(tr);
       }
-      tr.appendChild(td);
-      table.appendChild(tr);
 
-      tr = document.createElement('tr');
-      tr.setAttribute('class', 'growatt-row');
-      addCellsToRow(tr, 'Current:', mydata.deviceData.pac + ' W');
+      if (this.config.lastUpdated) {
+        tr = document.createElement('tr');
+        td = document.createElement('td');
+        td.setAttribute('class', 'growatt-cell');
+        td.innerText = 'Updated:';
+        tr.appendChild(td);
 
-      table.appendChild(tr);
+        td = document.createElement('td');
+        td.setAttribute('class', 'growatt-cell');
+        if (this.result.payload) {
+          td.innerText = mydata.deviceData.lastUpdateTime.split(' ')[1];
+        } else {
+          td.innerText = 'Pending';
+        }
+        tr.appendChild(td);
+        table.appendChild(tr);
+      }
 
-      tr = document.createElement('tr');
-      tr.setAttribute('class', 'growatt-row');
-      addCellsToRow(tr, 'Today:',  mydata.totalData.eToday + ' kWh');
+      if (this.config.currentPower) {
+        tr = document.createElement('tr');
+        tr.setAttribute('class', 'growatt-row');
+        addCellsToRow(tr, 'Current:', mydata.deviceData.pac + ' W');
+        table.appendChild(tr);
+      }
+
+      if (this.config.dayTotalGenerated) {
+        tr = document.createElement('tr');
+        tr.setAttribute('class', 'growatt-row');
+        addCellsToRow(tr, 'Today:',  mydata.totalData.eToday + ' kWh');
+        table.appendChild(tr);
+      }
+
+      if (this.config.monthTotalGenerated) {
+        tr = document.createElement('tr');
+        tr.setAttribute('class', 'growatt-row');
+        addCellsToRow(tr, 'Month: ', mydata.deviceData.eMonth + ' kWh');
+        table.appendChild(tr);
+      }
+
+      if (this.config.totalGenerated) {
+        tr = document.createElement('tr');
+        tr.setAttribute('class', 'growatt-row');
+        addCellsToRow(tr, 'Total: ', mydata.deviceData.eTotal + ' kWh');
+        table.appendChild(tr);
+      }
     } else {
       let td = document.createElement('td');
       td.setAttribute('class', 'growatt-cell');
       td.innerText = 'Pending...';
       tr.appendChild(td);
+      table.appendChild(tr);
     }
-    table.appendChild(tr);
 
     return wrapper;
   },

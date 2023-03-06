@@ -55,39 +55,6 @@ module.exports = NodeHelper.create({
         self.sendSocketNotification("GROWATT_GOT_DATA", JSON.stringify(data));
         await growatt.logout().catch(e => {console.log(e)});
       }
-
-/*
-      growatt
-        .login(payload.config.user, payload.config.password)
-        .then(result => {
-          return growatt.getAllPlantData(options);
-        })
-        .then(result => {
-          const keys = Object.keys(result);
-          keys.forEach(key => {
-              let { devices, ...rest } = result[key];
-              const serialNumbers = Object.keys(devices);
-              let devicesData = [];
-              serialNumbers.forEach(sn => {
-                  devicesData.push({
-                      sn: sn,
-                      data: devices[sn],
-                  });
-              });
-              data.push({
-                  plantid: key,
-                  data: { ...rest, devicesData }
-              })
-          });
-        })
-        .catch(e => { console.log('ERROR'); console.log(e)} )
-        .finally(() => {
-          console.log("GROWATT GOT DATA: " + JSON.stringify(data));
-console.log(JSON.stringify(self, null, 2));
-          this.sendSocketNotification("GROWATT_GOT_DATA", JSON.stringify(data));
-          growatt.logout()
-      });
-*/
     }
   }
 });
