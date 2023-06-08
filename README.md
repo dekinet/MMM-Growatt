@@ -6,7 +6,7 @@ This module utilises the [Growatt npm package](https://www.npmjs.com/package/gro
 ## Installation
 * Install [MagicMirror](https://docs.magicmirror.builders/)
 * `cd <MagicMirrorInstallation>/modules`
-* `git clone https://github.com/dekinet/MMM-Growatte.git`
+* `git clone https://github.com/dekinet/MMM-Growatt.git`
 * `cd MMM-Growatt`
 * `npm install`
 
