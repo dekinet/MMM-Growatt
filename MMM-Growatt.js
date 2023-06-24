@@ -107,7 +107,7 @@ Module.register("MMM-Growatt", {
       if (this.config.dayTotalGenerated) {
         tr = document.createElement('tr');
         tr.setAttribute('class', 'growatt-row');
-        addCellsToRow(tr, 'Today:',  mydata.totalData.eToday + ' kWh');
+        addCellsToRow(tr, 'Today:',  mydata.deviceData.eToday + ' kWh');
         table.appendChild(tr);
       }
 
