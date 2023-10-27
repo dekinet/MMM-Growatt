@@ -1,3 +1,55 @@
 .growatt-cell {
   padding-right: 0px;
+  text-align: left;
+}
+
+.growatt-cell:last-child {
+  text-align: right;
+}
+
+.growatt-data {
+  font-size: 12px;
+  font-weight: 400;
+  font-size: 15px;
+  text-transform: uppercase;
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+.growatt-table {
+  border-top: 1px solid #666;
+  font-size: 20px;
+  text-transform: none;
+  line-height: 1.4;
+  padding-top: 7px;
+  padding-bottom: 20px;
+ }
+
+.graphic-table {
+  width: 100%;
+  margin-top: 30px;
+  text-transform: none;
+  line-height: 1;
+  font-size: 18px;
+}
+
+.graphic1 , .graphic2 , .graphic3 , .graphic4 , .graphic5 {
+  width: 63px;
+  text-align: center;
+  height: 35px;
+  vertical-align: middle;
+  padding-top: 10px;
+}
+
+.graphic1 , .graphic3 {
+  font-size: 40px;
+} 
+
+
+.graphic5 {
+  font-size: 30px;
+}
+
+.graphic-row2:last-child {
+  font-size: 18px;
 }

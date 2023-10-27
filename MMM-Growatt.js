@@ -1,12 +1,22 @@
-function addCellsToRow(tr, leftText, rightText) {
+function addCellsToRow(tr, firstText, secondText, thirdText, fourthText) {
   let td = document.createElement('td');
   td.setAttribute('class', 'growatt-cell');
-  td.innerText = leftText;
+  td.innerText = firstText;
   tr.appendChild(td);
 
   td = document.createElement('td');
   td.setAttribute('class', 'growatt-cell');
-  td.innerText = rightText;
+  td.innerText = secondText;
+  tr.appendChild(td);
+
+  td = document.createElement('td');
+  td.setAttribute('class', 'growatt-cell');
+  td.innerText = thirdText;
+  tr.appendChild(td);
+
+  td = document.createElement('td');
+  td.setAttribute('class', 'growatt-cell');
+  td.innerText = fourthText;
   tr.appendChild(td);
 }
 
@@ -59,7 +69,7 @@ Module.register("MMM-Growatt", {
   getDom: function () {
     let wrapper = document.createElement('div');
     wrapper.setAttribute('class', 'growatt-data');
-    wrapper.innerText = 'Growatt';
+    wrapper.innerText = 'PV-Anlage';
     let table = document.createElement('table');
     table.setAttribute('class', 'growatt-table');
     wrapper.appendChild(table);
@@ -100,37 +110,184 @@ Module.register("MMM-Growatt", {
       if (this.config.currentPower) {
         tr = document.createElement('tr');
         tr.setAttribute('class', 'growatt-row');
-        addCellsToRow(tr, 'Current:', mydata.deviceData.pac + ' W');
+        addCellsToRow(tr, 'Aktuell', Math.round(mydata.deviceData.pac/100)/10 + ' kW');
         table.appendChild(tr);
       }
 
       if (this.config.dayTotalGenerated) {
         tr = document.createElement('tr');
         tr.setAttribute('class', 'growatt-row');
-        addCellsToRow(tr, 'Today:',  mydata.deviceData.eToday + ' kWh');
+        addCellsToRow(tr, 'Heute', Math.round(mydata.deviceData.eToday), Math.round(mydata.totalData.etoGridToday),Math.round((mydata.deviceData.eToday - mydata.totalData.etoGridToday)*0.3318 + mydata.totalData.etoGridToday*0.086) + '€');
         table.appendChild(tr);
       }
 
       if (this.config.monthTotalGenerated) {
         tr = document.createElement('tr');
         tr.setAttribute('class', 'growatt-row');
-        addCellsToRow(tr, 'Month: ', mydata.deviceData.eMonth + ' kWh');
+        addCellsToRow(tr, 'Monat ', Math.round(mydata.deviceData.eMonth),'',''/*Math.round( mydata.deviceData.eMonth*0.33) + '€'*/);
         table.appendChild(tr);
       }
 
       if (this.config.totalGenerated) {
         tr = document.createElement('tr');
         tr.setAttribute('class', 'growatt-row');
-        addCellsToRow(tr, 'Total: ', mydata.deviceData.eTotal + ' kWh');
+        addCellsToRow(tr, 'Gesamt ', Math.round(mydata.deviceData.eTotal), Math.round(mydata.totalData.etogridTotal), Math.round((mydata.deviceData.eTotal - mydata.totalData.etogridTotal)*0.3318 + mydata.totalData.etogridTotal*0.086) + '€');
         table.appendChild(tr);
-      }
+
+   	let table2 = document.createElement('table2');
+    	table2.setAttribute('class', 'graphic-table');
+    	wrapper.appendChild(table2);
+
+    	tr = document.createElement ('tr');
+	tr.setAttribute('class', 'graphic-row1');
+
+	let td = document.createElement('td');
+        td.setAttribute('class', 'graphic1');
+        td.innerText = '\n'
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic2');
+        td.innerText = '\n'
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic3');
+        td.innerText = '\n'
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic4');
+        td.innerText = mydata.statusData.pLocalLoad + '\n';
+        let IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-long-arrow-right';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic5');
+        td.innerText = ''
+	IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-plug';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+	table2.appendChild(tr);
+
+	tr = document.createElement ('tr');
+        tr.setAttribute('class', 'graphic-row2');
+
+	td = document.createElement('td');
+        td.setAttribute('class', 'graphic1');
+        td.innerText = ''
+        IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-sun-o';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic2');
+      	td.innerText = mydata.statusData.ppv + '\n';
+ 	IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-long-arrow-right';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic3');
+        td.innerText = ''
+ 	IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-home';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic4');
+	if (mydata.statusData.pdisCharge1 > 0)	{
+	        td.innerText = mydata.statusData.pdisCharge1 + '\n';
+	        IconWrapper = document.createElement('i');
+	        IconWrapper.className = 'fa fa-long-arrow-left';
+		}
+	else 	{
+
+		td.innerText = mydata.statusData.chargePower + '\n';
+                IconWrapper = document.createElement('i');
+                IconWrapper.className = 'fa fa-long-arrow-right';
+		}
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic4');
+        td.innerText = mydata.statusData.SOC + '% \n'
+        IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-battery-three-quarters';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        table2.appendChild(tr);
+
+	tr = document.createElement ('tr');
+        tr.setAttribute('class', 'graphic-row3');
+
+	td = document.createElement('td');
+        td.setAttribute('class', 'graphic5');
+        td.innerText = '';
+        IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-industry';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic4');
+        if (mydata.statusData.pactouser > 0) {
+                td.innerText = mydata.statusData.pactouser + '\n'
+                IconWrapper = document.createElement('i');
+                IconWrapper.className = 'fa fa-long-arrow-right';
+                }
+        else    {
+                td.innerText = mydata.statusData.pactogrid + '\n'
+                IconWrapper = document.createElement('i');
+                IconWrapper.className = 'fa fa-long-arrow-left';
+                }
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic3');
+        td.innerText = '\n';
+        tr.appendChild(td);
+
+// HEY YOU HAVE TO PUT IN CAR CHARGE VALUES DOWN BELOW
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic4');
+        td.innerText =/* mydata.statusData.pLocalLoad + */ '0 \n';
+        IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-long-arrow-right';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('class', 'graphic5');
+        td.innerText = '';
+        IconWrapper = document.createElement('i');
+        IconWrapper.className = 'fa fa-car';
+        td.appendChild(IconWrapper);
+        tr.appendChild(td);
+
+        table2.appendChild(tr);
+
+
+	}
     } else {
       let td = document.createElement('td');
       td.setAttribute('class', 'growatt-cell');
-      td.innerText = 'Pending...';
+      td.innerText = 'Daten werden geladen';
       tr.appendChild(td);
       table.appendChild(tr);
-    }
+   }
+
 
     return wrapper;
   },
