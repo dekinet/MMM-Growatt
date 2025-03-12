@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "growatt": "^0.3.0"
+    "growatt": "^0.7.7"
   }
 }
